@@ -28,6 +28,7 @@ class HockeyNLCard extends HTMLElement {
           border-width: 1px; /*var(--ha-card-border-width,1px); */
           border-radius: 12px; /* var(--ha-card-border-radius,12px);*/
           padding: 4px 2px;
+
           border-color: #6e6e6e;  /*var(--divider-color,#e0e0e0);*/
           margin: 4px; /* seperation between the entities */
         }
@@ -70,13 +71,13 @@ class HockeyNLCard extends HTMLElement {
     `;
     entityIdArray.forEach(entityId => {
       const curState = hass.states[entityId];
-      const date = new Date(curState.attributes.datetime)
+      const date = new Date(curState.attributes.Date)
       const formattedDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getFullYear()).padStart(2, '0')}`
       const formattedTime = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
-      const homeTeamClubParts = curState.attributes.home_team.name.split(" ")
+      const homeTeamClubParts = curState.attributes.Home.name.split(" ")
       const homeTeamName = homeTeamClubParts.pop()
       const homeTeamClub = homeTeamClubParts.join(" ")
-      const awayTeamClubParts = curState.attributes.away_team.name.split(" ")
+      const awayTeamClubParts = curState.attributes.Away.name.split(" ")
       const awayTeamName = awayTeamClubParts.pop()
       const awayTeamClub = awayTeamClubParts.join(" ")
 
@@ -84,20 +85,20 @@ class HockeyNLCard extends HTMLElement {
       this.content.innerHTML += `
         <div class="team-container">
           <div class="team">
-            <img src="${curState.attributes.home_team.logo}" class="team-logo" alt="Home Team Logo">
+            <img src="${curState.attributes.Home.logo}" class="team-logo" alt="Home Team Logo">
             <div class="team-name">${homeTeamClub}</div>
             <div class="team-name">${homeTeamName}</div>
           </div>
           <div class="match-data">
-            <div class="match-city">${curState.attributes.location.city}</div>
+            <div class="match-city">${curState.attributes.Location.address}</div>
             <div class="match-date">${formattedDate}</div>
             <div class="match-time">${formattedTime}</div>
-            <div class="match-field">${curState.attributes.field}</div>
+            <div class="match-field">${curState.attributes.Location.field}</div>
           </div>
           <div class="team">
-            <img src="${curState.attributes.away_team.logo}" class="team-logo" alt="Away Team Logo">
+            <img src="${curState.attributes.Away.logo}" class="team-logo" alt="Away Team Logo">
             <div class="team-name">${awayTeamClub}</div>
-            <div class="team-name">${awayTeamName}<div>
+            <div class="team-name">${awayTeamName}</div>
           </div>
         </div>
       `});
